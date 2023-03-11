@@ -4,19 +4,16 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 
 def organize_files():
-    path = filedialog.askdirectory()
-    if path:
+    if path := filedialog.askdirectory():
         files = os.listdir(path)
 
         for i in files:
             filename, extension = os.path.splitext(i)
             extension_1 = extension[1:]
             folder_path = os.path.join(path, extension_1)
-            if os.path.exists(folder_path):
-                shutil.move(os.path.join(path, i), os.path.join(folder_path, i))
-            else:
+            if not os.path.exists(folder_path):
                 os.makedirs(folder_path)
-                shutil.move(os.path.join(path, i), os.path.join(folder_path, i))
+            shutil.move(os.path.join(path, i), os.path.join(folder_path, i))
         messagebox.showinfo("Success", "Files have been organized successfully!")
     else:
         messagebox.showwarning("Error", "Please select a directory.")
